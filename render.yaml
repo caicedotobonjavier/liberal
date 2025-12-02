@@ -28,9 +28,10 @@ services:
     buildCommand: |
       pip install -r requirements.txt
       python manage.py collectstatic --no-input
-      python manage.py migrate --no-input
 
-    startCommand: gunicorn liberal.wsgi --bind 0.0.0.0:$PORT --log-file -
+    startCommand: |
+      python manage.py migrate --no-input
+      gunicorn liberal.wsgi:application --bind 0.0.0.0:$PORT --log-file -
 
 databases:
   - name: liberal-db
