@@ -31,7 +31,7 @@ services:
 
     startCommand: |
       python manage.py migrate --no-input
-      gunicorn liberal.wsgi:application --bind 0.0.0.0:$PORT --log-file -
+      gunicorn liberal.wsgi:application --bind 0.0.0.0:$PORT
 
 databases:
   - name: liberal-db
