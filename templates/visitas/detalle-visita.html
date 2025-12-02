@@ -1,0 +1,196 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ visita.titulo }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header -->
+    <div style="justify-items: center;" class="text-center mb-4">
+        <h1 class="display-5 fw-bold text-primary">{{ visita.titulo }}</h1>
+        <div class="d-flex justify-content-center gap-4 text-muted mt-3">
+            <span><i class="fas fa-map-marker-alt"></i> {{ visita.municipio }}</span>
+            <span><i class="fas fa-calendar-alt"></i> {{ visita.fecha_visita|date:"d M Y" }}</span>
+        </div>
+    </div>
+
+    <!-- Imagen Principal -->
+    {% if visita.imagen_principal %}
+    <div class="text-center mb-5">
+        <img src="{{ visita.imagen_principal.url }}" 
+             class="img-fluid rounded shadow-lg" 
+             alt="{{ visita.titulo }}"
+             style="max-height: 500px; width: auto; display: block; margin: 0 auto;">
+    </div>
+    
+    <!-- Separador después de imagen principal -->
+    <div class="my-5">
+        <hr class="border-primary opacity-50">
+    </div>
+    {% endif %}
+
+    <!-- Contenido -->
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="content">
+                {{ visita.contenido|safe }}
+            </div>
+        </div>
+    </div>
+
+    <!-- Separador antes de galería -->
+    {% if fotos %}
+    <div class="my-5">
+        <hr class="border-success opacity-50">
+    </div>
+    {% endif %}
+
+    <!-- Galería de Fotos -->
+    {% if fotos %}
+    <div class="mt-5">
+        <h3 class="text-center mb-4 text-primary">Galería de la Visita</h3>
+        <div class="row g-3 justify-content-center">
+            {% for foto in fotos %}
+            <div class="col-md-4 col-sm-6">
+                <div class="text-center">
+                    <img src="{{ foto.imagen.url }}" 
+                         class="img-fluid rounded shadow-sm gallery-photo" 
+                         alt="{{ foto.description }}"
+                         style="width: 100%; height: 250px; object-fit: cover; cursor: pointer;"
+                         onclick="expandImage(this)">
+                    {% if foto.description %}
+                    <p class="small text-muted mt-2">{{ foto.description }}</p>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Botón Volver -->
+    <div class="text-center mt-5 pt-4">
+        <a href="{% url 'visitas_app:visitas' %}" class="btn btn-primary">
+            <i class="fas fa-arrow-left me-2"></i>Volver a Visitas
+        </a>
+    </div>
+</div>
+
+<!-- Overlay para imagen expandida -->
+<div id="imageOverlay" class="image-overlay" onclick="closeImage()">
+    <div class="image-container">
+        <img id="expandedImage" class="expanded-img">
+        <span class="close-btn" onclick="closeImage()">&times;</span>
+    </div>
+</div>
+
+<style>
+.content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin: 1rem 0;
+}
+
+.content p {
+    line-height: 1.7;
+    font-size: 1.1rem;
+    color: #333;
+    margin-bottom: 1.5rem;
+}
+
+.gallery-photo:hover {
+    transform: scale(1.03);
+    transition: transform 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* Overlay Styles */
+.image-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.9);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.image-container {
+    position: relative;
+    max-width: 90%;
+    max-height: 90%;
+}
+
+.expanded-img {
+    max-width: 100%;
+    max-height: 90vh;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.close-btn {
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+    background: rgba(0,0,0,0.5);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.close-btn:hover {
+    background: rgba(255,255,255,0.2);
+}
+
+@media (max-width: 768px) {
+    .close-btn {
+        top: -30px;
+        right: -30px;
+        width: 40px;
+        height: 40px;
+        font-size: 1.5rem;
+    }
+    
+    .display-5 {
+        font-size: 2rem;
+    }
+}
+</style>
+
+<script>
+function expandImage(element) {
+    const overlay = document.getElementById('imageOverlay');
+    const expandedImg = document.getElementById('expandedImage');
+    
+    expandedImg.src = element.src;
+    expandedImg.alt = element.alt;
+    overlay.style.display = 'flex';
+    
+    // Prevenir scroll del body
+    document.body.style.overflow = 'hidden';
+}
+
+function closeImage() {
+    const overlay = document.getElementById('imageOverlay');
+    overlay.style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+// Cerrar con tecla ESC
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeImage();
+    }
+});
+</script>
+{% endblock %}

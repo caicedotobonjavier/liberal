@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Inicio{% endblock %}
+
+{% block content %}
+
+<h2>Visitas Recientes</h2>
+
+<div class="grid">
+
+    {% for visita in visitas %}
+    <div class="card">
+        <img src="{{ visita.imagen_principal.url }}" alt="{{ visita.titulo }}" class="card-img">
+        
+        <div class="card-content">
+            <h3>{{ visita.titulo }}</h3>
+
+            <p class="fecha">
+                {{ visita.fecha_visita|date:"d M Y" }}
+            </p>
+
+            <p>{{ visita.resumen|truncatewords:20 }}</p>
+
+            <a href="{% url 'visitas_app:detalle-visitas' visita.id %}" class="btn">Ver más</a>
+        </div>
+    </div>
+    {% empty %}
+    <p>No hay visitas registradas aún.</p>
+    {% endfor %}
+
+</div>
+
+<hr style="margin:40px 0;">
+
+<h2>Próximos Eventos</h2>
+
+<div class="grid">
+
+    {% for evento in eventos %}
+    <div class="card">
+        <div class="card-content">
+            <h3>{{ evento.titulo }}</h3>
+
+            <p class="fecha">
+                {{ evento.fecha_evento|date:"d M Y H:i" }}
+            </p>
+
+            <p>{{ evento.descripcion|truncatewords:20 }}</p>
+
+            <a href="{% url 'eventos_app:detalle-eventos' evento.id %}" class="btn">Ver más</a>
+        </div>
+    </div>
+    {% empty %}
+    <p>No hay eventos registrados aún.</p>
+    {% endfor %}
+    
+</div>
+
+{% endblock content %}

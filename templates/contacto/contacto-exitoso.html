@@ -1,0 +1,265 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Mensaje Enviado - Partido Liberal Socialdemócrata{% endblock %}
+
+{% block content %}
+<div class="confirmacion-container">
+    <div class="confirmacion-card">
+        <div class="confirmacion-icon">
+            <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z" fill="#4CAF50"/>
+            </svg>
+        </div>
+        
+        <h1>¡Mensaje Enviado con Éxito!</h1>
+        
+        <div class="confirmacion-mensaje">
+            <p>Gracias por contactarte con el <strong>Partido Liberal Socialdemócrata</strong>. Hemos recibido tu mensaje y lo revisaremos cuidadosamente.</p>
+            
+            <div class="detalles-envio">
+                <div class="detalle-item">
+                    <span class="detalle-label">¿Qué sigue?</span>
+                    <span class="detalle-texto">Nuestro equipo se pondrá en contacto contigo en un plazo máximo de 48 horas.</span>
+                </div>
+                
+                <div class="detalle-item">
+                    <span class="detalle-label">Información importante</span>
+                    <span class="detalle-texto">Por favor, mantente atento a tu correo electrónico y teléfono.</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="acciones-confirmacion">
+            <a href="{% url 'contacto_app:contactos' %}" class="btn btn-secundario">
+                Enviar otro mensaje
+            </a>
+            <a href="{% url 'home_app:index' %}" class="btn btn-principal">
+                Volver al inicio
+            </a>
+        </div>
+
+        <div class="contacto-rapido">
+            <h3>¿Necesitas ayuda inmediata?</h3>
+            <div class="contacto-items">
+                <div class="contacto-item">
+                    <span class="contacto-icon">📧</span>
+                    <span>contacto@partidoliberal.org</span>
+                </div>
+                <div class="contacto-item">
+                    <span class="contacto-icon">📞</span>
+                    <span>+1 234 567 8900</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* ESTILOS PARA LA PÁGINA DE CONFIRMACIÓN */
+    .confirmacion-container {
+        max-width: 600px;
+        margin: 40px auto;
+        padding: 20px;
+    }
+
+    .confirmacion-card {
+        background: var(--blanco);
+        padding: 50px 40px;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        text-align: center;
+    }
+
+    .confirmacion-icon {
+        margin-bottom: 30px;
+    }
+
+    .confirmacion-icon svg {
+        filter: drop-shadow(0 4px 8px rgba(76, 175, 80, 0.3));
+    }
+
+    .confirmacion-card h1 {
+        color: var(--rojo-principal);
+        margin-bottom: 25px;
+        font-size: 2.2em;
+        font-weight: 700;
+    }
+
+    .confirmacion-mensaje {
+        text-align: left;
+        margin-bottom: 40px;
+    }
+
+    .confirmacion-mensaje p {
+        font-size: 1.1em;
+        line-height: 1.6;
+        color: var(--gris-texto);
+        margin-bottom: 30px;
+    }
+
+    .detalles-envio {
+        background: #f8f9fa;
+        padding: 25px;
+        border-radius: 8px;
+        border-left: 4px solid var(--rojo-principal);
+    }
+
+    .detalle-item {
+        margin-bottom: 20px;
+    }
+
+    .detalle-item:last-child {
+        margin-bottom: 0;
+    }
+
+    .detalle-label {
+        display: block;
+        font-weight: 600;
+        color: var(--rojo-principal);
+        margin-bottom: 8px;
+        font-size: 1em;
+    }
+
+    .detalle-texto {
+        color: #666;
+        line-height: 1.5;
+        display: block;
+    }
+
+    .acciones-confirmacion {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        margin-bottom: 40px;
+        flex-wrap: wrap;
+    }
+
+    .btn-principal {
+        background-color: var(--rojo-principal);
+        color: white;
+        padding: 12px 30px;
+        text-decoration: none;
+        border-radius: 5px;
+        font-weight: 600;
+        transition: background-color 0.3s ease;
+        display: inline-block;
+    }
+
+    .btn-principal:hover {
+        background-color: var(--rojo-oscuro);
+        color: white;
+        text-decoration: none;
+    }
+
+    .btn-secundario {
+        background-color: transparent;
+        color: var(--rojo-principal);
+        padding: 12px 30px;
+        text-decoration: none;
+        border: 2px solid var(--rojo-principal);
+        border-radius: 5px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: inline-block;
+    }
+
+    .btn-secundario:hover {
+        background-color: var(--rojo-principal);
+        color: white;
+        text-decoration: none;
+    }
+
+    .contacto-rapido {
+        border-top: 1px solid #e0e0e0;
+        padding-top: 30px;
+    }
+
+    .contacto-rapido h3 {
+        color: var(--gris-texto);
+        margin-bottom: 20px;
+        font-size: 1.2em;
+    }
+
+    .contacto-items {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        flex-wrap: wrap;
+    }
+
+    .contacto-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #666;
+        font-size: 0.95em;
+    }
+
+    .contacto-icon {
+        font-size: 1.2em;
+    }
+
+    /* Animación de entrada */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .confirmacion-card {
+        animation: fadeInUp 0.6s ease-out;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .confirmacion-container {
+            margin: 20px auto;
+            padding: 15px;
+        }
+
+        .confirmacion-card {
+            padding: 30px 20px;
+        }
+
+        .confirmacion-card h1 {
+            font-size: 1.8em;
+        }
+
+        .acciones-confirmacion {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .btn-principal,
+        .btn-secundario {
+            width: 200px;
+            text-align: center;
+        }
+
+        .contacto-items {
+            flex-direction: column;
+            gap: 15px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .confirmacion-card {
+            padding: 25px 15px;
+        }
+
+        .confirmacion-card h1 {
+            font-size: 1.6em;
+        }
+
+        .detalles-envio {
+            padding: 20px 15px;
+        }
+    }
+</style>
+{% endblock content %}

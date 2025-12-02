@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Inicio{% endblock %}
+
+{% block content %}
+
+<h2>Proximos Eventos</h2>
+
+<div class="grid">
+
+    {% for evento in eventos %}
+    <div class="card">
+        <div class="card-content">
+            <h3>{{ evento.titulo }}</h3>
+
+            <p class="fecha">
+                {{ evento.fecha_evento|date:"d M Y H:i" }}
+            </p>
+
+            <p>{{ evento.descripcion|truncatewords:20 }}</p>
+
+            <a href="{% url 'eventos_app:detalle-eventos' evento.id %}" class="btn">Ver más</a>
+        </div>
+    </div>
+    {% empty %}
+    <p>No hay eventos registrados aún.</p>
+    {% endfor %}
+    
+</div>
+
+
+
+{% endblock content %}

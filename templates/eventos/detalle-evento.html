@@ -1,0 +1,271 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ evento.titulo }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header Centrado -->
+    <div style="justify-items: center;" class="text-center mb-4">
+        <h1 class="display-5 fw-bold text-primary">{{ evento.titulo }}</h1>
+        <div class="evento-meta">
+            <span class="meta-badge bg-danger text-white">
+                <i class="fas fa-map-marker-alt"></i>
+                {{ evento.lugar }}
+            </span>
+            <span class="meta-badge bg-danger text-white">
+                <i class="fas fa-calendar-alt"></i>
+                {{ evento.fecha_evento|date:"d M Y" }}
+            </span>
+            <span class="meta-badge bg-danger text-white">
+                <i class="fas fa-clock"></i>
+                {{ evento.fecha_evento|date:"h:i A" }}
+            </span>
+        </div>
+    </div>
+
+    <!-- Card Principal -->
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="evento-card">
+                <!-- Descripción -->
+                <div class="descripcion-section">
+                    <div class="section-icon bg-danger">
+                        <i class="fas fa-file-alt text-white"></i>
+                    </div>
+                    <div class="section-content">
+                        <h4 class="text-dark">Descripción del Evento</h4>
+                        <p class="descripcion-text">{{ evento.descripcion }}</p>
+                    </div>
+                </div>
+
+                <!-- Información del Evento -->
+                <div class="info-section">
+                    <div class="section-icon bg-danger">
+                        <i class="fas fa-info-circle text-white"></i>
+                    </div>
+                    <div class="section-content">
+                        <h4 class="text-dark">Información del Evento</h4>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <div class="info-icon bg-danger text-white">
+                                    <i class="fas fa-calendar-day"></i>
+                                </div>
+                                <div class="info-details">
+                                    <label class="text-muted">Fecha</label>
+                                    <strong class="text-dark">{{ evento.fecha_evento|date:"l, d F Y" }}</strong>
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-icon bg-danger text-white">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div class="info-details">
+                                    <label class="text-muted">Hora</label>
+                                    <strong class="text-dark">{{ evento.fecha_evento|date:"h:i A" }}</strong>
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-icon bg-danger text-white">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                <div class="info-details">
+                                    <label class="text-muted">Lugar</label>
+                                    <strong class="text-dark">{{ evento.lugar }}</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botones de Acción -->
+    <div class="text-center mt-5">
+        <div class="action-buttons">
+            <a href="{% url 'eventos_app:eventos' %}" class="btn btn-danger btn-action">
+                <i class="fas fa-arrow-left me-2"></i>Volver a Eventos
+            </a>
+            
+        </div>
+    </div>
+</div>
+
+<style>
+.evento-meta {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.meta-badge {
+    padding: 0.5rem 1.5rem;
+    border-radius: 25px;
+    font-weight: 500;
+    box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+}
+
+.evento-card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    overflow: hidden;
+    border: 1px solid #f0f0f0;
+}
+
+.descripcion-section, .info-section {
+    display: flex;
+    padding: 2.5rem;
+    align-items: flex-start;
+}
+
+.descripcion-section {
+    border-bottom: 2px solid #f8f9fa;
+    background: linear-gradient(135deg, #fff5f5 0%, #ffe6e6 100%);
+}
+
+.info-section {
+    background: white;
+}
+
+.section-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-right: 1.5rem;
+    flex-shrink: 0;
+}
+
+.section-content {
+    flex: 1;
+}
+
+.section-content h4 {
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.descripcion-text {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #555;
+    margin: 0;
+}
+
+.info-grid {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    padding: 1.5rem;
+    background: #fff5f5;
+    border-radius: 15px;
+    border-left: 4px solid #dc3545;
+    transition: transform 0.3s ease;
+}
+
+.info-item:hover {
+    transform: translateX(5px);
+    background: #ffe6e6;
+}
+
+.info-icon {
+    width: 50px;
+    height: 50px;
+    background: white;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    margin-right: 1rem;
+    box-shadow: 0 4px 15px rgba(220, 53, 69, 0.1);
+    flex-shrink: 0;
+}
+
+.info-details label {
+    display: block;
+    color: #6c757d;
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+    font-weight: 500;
+}
+
+.info-details strong {
+    color: #2c3e50;
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn-action {
+    padding: 0.75rem 2rem;
+    border-radius: 25px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-action:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);
+}
+
+@media (max-width: 768px) {
+    .descripcion-section, .info-section {
+        flex-direction: column;
+        text-align: center;
+        padding: 2rem 1.5rem;
+    }
+    
+    .section-icon {
+        margin-right: 0;
+        margin-bottom: 1rem;
+    }
+    
+    .evento-meta {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .meta-badge {
+        width: 200px;
+    }
+    
+    .info-item {
+        flex-direction: column;
+        text-align: center;
+        padding: 1.5rem 1rem;
+    }
+    
+    .info-icon {
+        margin-right: 0;
+        margin-bottom: 1rem;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .btn-action {
+        width: 100%;
+        max-width: 300px;
+    }
+}
+</style>
+{% endblock %}

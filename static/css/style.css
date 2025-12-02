@@ -1,0 +1,192 @@
+/* Estilos generales para el sitio del Partido Liberal Socialdemócrata */
+
+/* Tipografía básica */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f5f5f5;
+    color: #222;
+}
+
+/* Colores institucionales */
+:root {
+    --rojo-principal: #b30000; /* rojo profundo del logo */
+    --rojo-oscuro: #7a0000;
+    --gris-texto: #333;
+    --blanco: #ffffff;
+}
+
+/* HEADER */
+header {
+    background-color: var(--rojo-principal);
+    padding: 15px 25px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: var(--blanco);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+header .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+header .logo img {
+    height: 55px;
+    width: auto;
+}
+
+header nav a {
+    color: var(--blanco) !important; /* Fuerza color blanco */
+    text-decoration: none;
+    margin-left: 18px;
+    font-weight: 600;
+    font-size: 1.2em; /* Aumenta el tamaño de fuente */
+}
+
+header nav a:hover {
+    text-decoration: underline;
+}
+
+header div a:hover {
+    text-decoration: underline;
+    opacity: 0.9;
+}
+
+header h1 {
+    color: var(--blanco);
+    font-size: 1.5em;
+    margin: 0;
+}
+
+header div a {
+    color: var(--blanco) !important;
+    text-decoration: none;
+    margin-left: 18px;
+    font-weight: 600;
+    font-size: 1.2em;
+}
+
+
+header .logo h2 {
+    color: var(--blanco);
+    font-size: 1.4em; /* Aumenta tamaño si es necesario */
+    margin: 0;
+}
+
+/* CONTENEDOR GENERAL */
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 25px auto;
+}
+
+/* SISTEMA DE GRID PARA LAS CARDS */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+    margin: 20px 0;
+}
+
+/* TARJETAS GENERALES */
+.card {
+    background-color: var(--blanco);
+    border-radius: 8px;
+    padding: 0;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* IMÁGENES DE LAS CARDS */
+.card-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+}
+
+/* CONTENIDO DE LAS CARDS */
+.card-content {
+    padding: 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.card h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: var(--rojo-principal);
+}
+
+.card .fecha {
+    color: #666;
+    font-size: 0.9em;
+    margin-bottom: 15px;
+}
+
+.card p {
+    margin-bottom: 15px;
+    flex-grow: 1;
+}
+
+/* BOTONES */
+.btn {
+    display: inline-block;
+    padding: 10px 18px;
+    background-color: var(--rojo-principal);
+    color: var(--blanco);
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: 600;
+    text-align: center;
+    align-self: flex-start;
+}
+
+.btn:hover {
+    background-color: var(--rojo-oscuro);
+}
+
+/* FOOTER */
+footer {
+    background-color: var(--rojo-principal);
+    color: var(--blanco);
+    text-align: center;
+    padding: 20px;
+    margin-top: 40px;
+}
+
+footer p {
+    margin: 0;
+    font-size: 14px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+    
+    header {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    header nav {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+    
+    header nav a {
+        margin-left: 0;
+    }
+}

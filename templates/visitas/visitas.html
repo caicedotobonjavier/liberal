@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Inicio{% endblock %}
+
+{% block content %}
+
+<h2>Visitas Realizadas al Territorio</h2>
+
+<div class="grid">
+
+    {% for visita in visitas %}
+    <div class="card">
+        <img src="{{ visita.imagen_principal.url }}" alt="{{ visita.titulo }}" class="card-img">
+        
+        <div class="card-content">
+            <h3>{{ visita.titulo }}</h3>
+
+            <p class="fecha">
+                {{ visita.fecha_visita|date:"d M Y" }}
+            </p>
+
+            <p>{{ visita.resumen|truncatewords:20 }}</p>
+
+            <a href="{% url 'visitas_app:detalle-visitas' visita.id %}" class="btn">Ver más</a>
+        </div>
+    </div>
+    {% empty %}
+    <p>No hay visitas registradas aún.</p>
+    {% endfor %}
+
+</div>
+
+
+
+{% endblock content %}
