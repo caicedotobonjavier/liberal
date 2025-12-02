@@ -2,10 +2,10 @@ services:
   - type: web
     name: liberal-web
     env: python
-    plan: free
     region: oregon
-    repo: https://github.com/caicedotobonjavier/liberal
+    plan: free
     branch: main
+    repo: https://github.com/caicedotobonjavier/liberal
 
     envVars:
       - key: DJANGO_SETTINGS_MODULE
@@ -20,6 +20,7 @@ services:
       - key: ALLOWED_HOSTS
         value: liberal-web.onrender.com
 
+      # ESTA VARIABLE VIENE AUTOMÁTICAMENTE DE LA BD
       - key: DATABASE_URL
         fromDatabase:
           name: liberal-db
@@ -28,8 +29,9 @@ services:
     buildCommand: |
       pip install -r requirements.txt
       python manage.py collectstatic --no-input
+      python manage.py migrate --no-input
 
-    startCommand: gunicorn liberal.wsgi:application --bind 0.0.0.0:$PORT
+    startCommand: gunicorn liberal.wsgi --bind 0.0.0.0:$PORT --log-file -
 
 databases:
   - name: liberal-db
