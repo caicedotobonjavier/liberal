@@ -31,6 +31,14 @@ STATIC_ROOT = BASE_DIR.child("staticfiles")
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
+# ========= CKEDITOR =========
+# Ruta donde CKEditor guarda los archivos
+CKEDITOR_UPLOAD_PATH = "uploads/"
+
+# ========= MEDIA (para producción también) =========
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR.child("media")
+
 # ========= CSRF =========
 CSRF_TRUSTED_ORIGINS = [
     f"https://{host}" for host in ALLOWED_HOSTS if host != "*"
