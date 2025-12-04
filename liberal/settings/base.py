@@ -255,7 +255,6 @@ CKEDITOR_CONFIGS = {
 }
 
 # ==================== CLOUDINARY CONFIGURATION ====================
-# DEBUG - Verificar variables
 print("=" * 50)
 print("CLOUDINARY CONFIGURATION CHECK:")
 print(f"CLOUDINARY_CLOUD_NAME: {os.environ.get('CLOUDINARY_CLOUD_NAME', 'NO CONFIGURADO')}")
@@ -263,27 +262,21 @@ print(f"CLOUDINARY_API_KEY: {'CONFIGURADO' if os.environ.get('CLOUDINARY_API_KEY
 print(f"CLOUDINARY_API_SECRET: {'CONFIGURADO' if os.environ.get('CLOUDINARY_API_SECRET') else 'NO CONFIGURADO'}")
 print("=" * 50)
 
-# Obtener variables de entorno
 CLOUDINARY_CLOUD_NAME = os.environ.get('CLOUDINARY_CLOUD_NAME')
 CLOUDINARY_API_KEY = os.environ.get('CLOUDINARY_API_KEY')
 CLOUDINARY_API_SECRET = os.environ.get('CLOUDINARY_API_SECRET')
 
-# Verificar si todas las variables existen
 CLOUDINARY_CONFIGURED = all([CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET])
 
 if CLOUDINARY_CONFIGURED:
-    # Configuración CORREGIDA para django-cloudinary-storage
+    # CONFIGURACIÓN MÍNIMA QUE FUNCIONA - SIN PREFIX
     CLOUDINARY_STORAGE = {
         'CLOUD_NAME': CLOUDINARY_CLOUD_NAME,
         'API_KEY': CLOUDINARY_API_KEY,
         'API_SECRET': CLOUDINARY_API_SECRET,
         'SECURE': True,
-        # AÑADIR ESTAS LÍNEAS:
-        'STATICFILES_MANIFEST_ROOT': BASE_DIR.child('static'),
-        'PREFIX': 'media/',  # Prefijo opcional para organizar
     }
     
-    # Configuración para Cloudinary SDK
     import cloudinary
     cloudinary.config(
         cloud_name=CLOUDINARY_CLOUD_NAME,
@@ -292,23 +285,16 @@ if CLOUDINARY_CONFIGURED:
         secure=True
     )
     
-    # Usar Cloudinary Storage
     DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-    
-    # IMPORTANTE: MEDIA_URL debe ser VACÍO para Cloudinary
     MEDIA_URL = ''
-    
-    # MEDIA_ROOT no se usa con Cloudinary
     MEDIA_ROOT = ''
     
-    print("✅ CLOUDINARY ACTIVADO - Configuración corregida")
-    print("ℹ️  Las imágenes se guardarán en: cloudinary.com/django-liberal/django-liberal/")
+    print("✅ CLOUDINARY ACTIVADO - Sin prefix, debería funcionar")
 else:
-    # Fallback a almacenamiento local
     DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
     MEDIA_URL = '/media/'
     MEDIA_ROOT = BASE_DIR.child('media')
-    print("⚠️  CLOUDINARY NO CONFIGURADO - Usando almacenamiento local")
+    print("⚠️  CLOUDINARY NO CONFIGURADO - Local")
 # ==================== FIN CLOUDINARY ====================
 
 # Static files (CSS, JavaScript, Images)
