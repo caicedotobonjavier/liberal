@@ -5,6 +5,8 @@ from model_utils.models import TimeStampedModel
 from applications.municipios.models import Municipio
 #
 from ckeditor_uploader.fields import RichTextUploadingField
+
+from cloudinary.models import CloudinaryField  # <-- NUEVA IMPORTACIÓN
 # Create your models here.
 
 class Visita(TimeStampedModel):
@@ -13,7 +15,7 @@ class Visita(TimeStampedModel):
     fecha_visita = models.DateField('Fecha Visita', auto_now=False, auto_now_add=False)
     resumen = models.TextField('Resumen')
     contenido = RichTextUploadingField('Contenido')
-    imagen_principal = models.ImageField('Imagen Principal', upload_to='visitas/', height_field=None, width_field=None, max_length=None)
+    imagen_principal = CloudinaryField('imagen', folder='visita/')
     fecha_publicado = models.DateField('Fecha Publicacion', auto_now=False, auto_now_add=False)
     publicado = models.BooleanField('Publicado', default=False)
 
@@ -30,7 +32,7 @@ class Visita(TimeStampedModel):
 
 class FotoVisita(TimeStampedModel):
     visita = models.ForeignKey(Visita, related_name='fotovisita_visita', on_delete=models.CASCADE)
-    imagen = models.ImageField('Imagen', upload_to='visitas/galeria/', height_field=None, width_field=None, max_length=None)
+    imagen = CloudinaryField('imagen', folder='visita/galeria')
     descripcion = models.CharField('Descripcion', max_length=100)
 
     class Meta:
