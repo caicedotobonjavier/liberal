@@ -163,6 +163,8 @@ DJANGO_APPS = (
 THIRD_PARTY_APPS = (
     'ckeditor',
     'ckeditor_uploader',
+    'cloudinary',           # AÑADIDO
+    'cloudinary_storage',   # AÑADIDO
 )
 
 LOCAL_APPS = (
@@ -174,18 +176,6 @@ LOCAL_APPS = (
     'applications.contacto',
     'applications.equipo',
 )
-
-# Configuración CKEditor
-CKEDITOR_UPLOAD_PATH = "uploads/"
-CKEDITOR_IMAGE_BACKEND = "pillow"
-CKEDITOR_JQUERY_URL = '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'
-CKEDITOR_CONFIGS = {
-    'default': {
-        'toolbar': 'full',
-        'height': 300,
-        'width': '100%',
-    },
-}
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
@@ -218,6 +208,14 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'liberal.wsgi.application'
 
+# Database
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR.child('db.sqlite3'),
+    }
+}
+
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -244,3 +242,72 @@ USE_TZ = True
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'users.USER'
+
+# Configuración CKEditor
+CKEDITOR_UPLOAD_PATH = "uploads/"
+CKEDITOR_IMAGE_BACKEND = "pillow"
+CKEDITOR_JQUERY_URL = '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'full',
+        'height': 300,
+        'width': '100%',
+    },
+}
+
+# ==================== CLOUDINARY CONFIGURATION ====================
+# DEBUG - Verificar variables
+print("=" * 50)
+print("CLOUDINARY CONFIGURATION CHECK:")
+print(f"CLOUDINARY_CLOUD_NAME: {os.environ.get('CLOUDINARY_CLOUD_NAME', 'NO CONFIGURADO')}")
+print(f"CLOUDINARY_API_KEY: {'CONFIGURADO' if os.environ.get('CLOUDINARY_API_KEY') else 'NO CONFIGURADO'}")
+print(f"CLOUDINARY_API_SECRET: {'CONFIGURADO' if os.environ.get('CLOUDINARY_API_SECRET') else 'NO CONFIGURADO'}")
+print("=" * 50)
+
+# Obtener variables de entorno
+CLOUDINARY_CLOUD_NAME = os.environ.get('CLOUDINARY_CLOUD_NAME')
+CLOUDINARY_API_KEY = os.environ.get('CLOUDINARY_API_KEY')
+CLOUDINARY_API_SECRET = os.environ.get('CLOUDINARY_API_SECRET')
+
+# Verificar si todas las variables existen
+CLOUDINARY_CONFIGURED = all([CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET])
+
+if CLOUDINARY_CONFIGURED:
+    # Configuración para django-cloudinary-storage
+    CLOUDINARY_STORAGE = {
+        'CLOUD_NAME': CLOUDINARY_CLOUD_NAME,
+        'API_KEY': CLOUDINARY_API_KEY,
+        'API_SECRET': CLOUDINARY_API_SECRET,
+        'SECURE': True,
+    }
+    
+    # Configuración para Cloudinary SDK
+    import cloudinary
+    cloudinary.config(
+        cloud_name=CLOUDINARY_CLOUD_NAME,
+        api_key=CLOUDINARY_API_KEY,
+        api_secret=CLOUDINARY_API_SECRET,
+        secure=True
+    )
+    
+    # Usar Cloudinary Storage
+    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+    
+    # URL para medios (Cloudinary)
+    MEDIA_URL = f'https://res.cloudinary.com/{CLOUDINARY_CLOUD_NAME}/image/upload/'
+    
+    # MEDIA_ROOT vacío porque usamos Cloudinary
+    MEDIA_ROOT = ''
+    
+    print("✅ CLOUDINARY ACTIVADO - Las imágenes se subirán a Cloudinary")
+else:
+    # Fallback a almacenamiento local
+    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+    MEDIA_URL = '/media/'
+    MEDIA_ROOT = BASE_DIR.child('media')
+    print("⚠️  CLOUDINARY NO CONFIGURADO - Usando almacenamiento local")
+# ==================== FIN CLOUDINARY ====================
+
+# Static files (CSS, JavaScript, Images)
+STATIC_URL = 'static/'
+STATICFILES_DIRS = [BASE_DIR.child('static')]
