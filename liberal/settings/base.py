@@ -119,7 +119,6 @@
 #
 #
 #AUTH_USER_MODEL = 'users.USER'
-
 from django.core.exceptions import ImproperlyConfigured
 import json
 import os
@@ -273,12 +272,13 @@ CLOUDINARY_API_SECRET = os.environ.get('CLOUDINARY_API_SECRET')
 CLOUDINARY_CONFIGURED = all([CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET])
 
 if CLOUDINARY_CONFIGURED:
-    # Configuración para django-cloudinary-storage
+    # Configuración CORREGIDA para django-cloudinary-storage
     CLOUDINARY_STORAGE = {
         'CLOUD_NAME': CLOUDINARY_CLOUD_NAME,
         'API_KEY': CLOUDINARY_API_KEY,
         'API_SECRET': CLOUDINARY_API_SECRET,
         'SECURE': True,
+        'PREFIX': 'django-liberal/',  # ORGANIZA TUS ARCHIVOS EN CLOUDINARY
     }
     
     # Configuración para Cloudinary SDK
@@ -293,13 +293,14 @@ if CLOUDINARY_CONFIGURED:
     # Usar Cloudinary Storage
     DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
     
-    # URL para medios (Cloudinary)
-    MEDIA_URL = f'https://res.cloudinary.com/{CLOUDINARY_CLOUD_NAME}/image/upload/'
+    # IMPORTANTE: MEDIA_URL debe ser VACÍO para Cloudinary
+    MEDIA_URL = ''
     
-    # MEDIA_ROOT vacío porque usamos Cloudinary
+    # MEDIA_ROOT no se usa con Cloudinary
     MEDIA_ROOT = ''
     
-    print("✅ CLOUDINARY ACTIVADO - Las imágenes se subirán a Cloudinary")
+    print("✅ CLOUDINARY ACTIVADO - Configuración corregida")
+    print("ℹ️  Las imágenes se guardarán en: cloudinary.com/django-liberal/django-liberal/")
 else:
     # Fallback a almacenamiento local
     DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
