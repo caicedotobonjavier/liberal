@@ -278,7 +278,9 @@ if CLOUDINARY_CONFIGURED:
         'API_KEY': CLOUDINARY_API_KEY,
         'API_SECRET': CLOUDINARY_API_SECRET,
         'SECURE': True,
-        'PREFIX': 'django-liberal/',  # ORGANIZA TUS ARCHIVOS EN CLOUDINARY
+        # AÑADIR ESTAS LÍNEAS:
+        'STATICFILES_MANIFEST_ROOT': BASE_DIR.child('static'),
+        'PREFIX': 'media/',  # Prefijo opcional para organizar
     }
     
     # Configuración para Cloudinary SDK
