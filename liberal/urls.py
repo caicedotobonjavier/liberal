@@ -49,5 +49,5 @@ urlpatterns = [
 ]
 
 # Solo para DEBUG, pero no te causa problema en prod
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+#urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
