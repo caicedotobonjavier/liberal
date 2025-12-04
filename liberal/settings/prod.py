@@ -36,8 +36,8 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 CKEDITOR_UPLOAD_PATH = "uploads/"
 
 # ========= MEDIA (para producción también) =========
-MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR.child("media")
+#MEDIA_URL = "/media/"
+#MEDIA_ROOT = BASE_DIR.child("media")
 
 # ========= CSRF =========
 CSRF_TRUSTED_ORIGINS = [
