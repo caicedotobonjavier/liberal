@@ -7,12 +7,23 @@ For more information on this file, see
 https://docs.djangoproject.com/en/5.2/howto/deployment/wsgi/
 """
 
-import os
+#import os
+#
+#from django.core.wsgi import get_wsgi_application
+#
+#os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'liberal.settings.local')
+#
+#application = get_wsgi_application()
 
+
+import os
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'liberal.settings.local')
+# ELIMINA o COMENTA esta línea:
+# os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'liberal.settings.local')
+
+# Reemplaza con:
+settings_module = os.environ.get('DJANGO_SETTINGS_MODULE', 'liberal.settings.local')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', settings_module)
 
 application = get_wsgi_application()
-
-
