@@ -1,150 +1,30 @@
-#from django.core.exceptions import ImproperlyConfigured
-#import json
-#
-## Build paths inside the project like this: BASE_DIR / 'subdir'.
-#from unipath import Path
-#BASE_DIR = Path(__file__).resolve().ancestor(3)
-#
-## Quick-start development settings - unsuitable for production
-## See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
-#
-## SECURITY WARNING: keep the secret key used in production secret!
-#with open("secret.json") as f:
-#    secret = json.loads(f.read())
-#
-#def get_secret(secrest_name, secrets=secret):
-#    try:
-#        return secrets[secrest_name]
-#    except:
-#        msg = "la variable no %s existe" %secrest_name
-#        raise ImproperlyConfigured(msg)
-#    
-#SECRET_KEY = get_secret('SECRET_KEY')
-#
-#
-#
-## Application definition
-#
-#DJANGO_APPS = (
-#    'django.contrib.admin',
-#    'django.contrib.auth',
-#    'django.contrib.contenttypes',
-#    'django.contrib.sessions',
-#    'django.contrib.messages',
-#    'django.contrib.staticfiles',
-#)
-#
-#THIRD_PARTY_APPS = (
-#    'ckeditor',
-#    'ckeditor_uploader',
-#)
-#
-#LOCAL_APPS = (
-#    'applications.users',
-#    'applications.municipios',
-#    'applications.visitas',
-#    'applications.home',
-#    'applications.eventos',
-#    'applications.contacto',
-#    'applications.equipo',
-#)
-#
-#
-#INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
-#
-#MIDDLEWARE = [
-#    'django.middleware.security.SecurityMiddleware',
-#    'django.contrib.sessions.middleware.SessionMiddleware',
-#    'django.middleware.common.CommonMiddleware',
-#    'django.middleware.csrf.CsrfViewMiddleware',
-#    'django.contrib.auth.middleware.AuthenticationMiddleware',
-#    'django.contrib.messages.middleware.MessageMiddleware',
-#    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-#]
-#
-#ROOT_URLCONF = 'liberal.urls'
-#
-#TEMPLATES = [
-#    {
-#        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-#        'DIRS': [BASE_DIR.child('templates')],
-#        'APP_DIRS': True,
-#        'OPTIONS': {
-#            'context_processors': [
-#                'django.template.context_processors.request',
-#                'django.contrib.auth.context_processors.auth',
-#                'django.contrib.messages.context_processors.messages',
-#            ],
-#        },
-#    },
-#]
-#
-#WSGI_APPLICATION = 'liberal.wsgi.application'
-#
-#
-## Password validation
-## https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
-#
-#AUTH_PASSWORD_VALIDATORS = [
-#    {
-#        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-#    },
-#    {
-#        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-#    },
-#    {
-#        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-#    },
-#    {
-#        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-#    },
-#]
-#
-#
-## Internationalization
-## https://docs.djangoproject.com/en/5.2/topics/i18n/
-#
-#LANGUAGE_CODE = 'es-ES'
-#
-#TIME_ZONE = 'UTC'
-#
-#USE_I18N = True
-#
-#USE_TZ = True
-#
-## Default primary key field type
-## https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
-#
-#DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-#
-#
-#AUTH_USER_MODEL = 'users.USER'
-
-import json
 from django.core.exceptions import ImproperlyConfigured
+import json
+
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
 from unipath import Path
-
-
-# ========= BASE DIR =========
 BASE_DIR = Path(__file__).resolve().ancestor(3)
 
-# ========= SECRET KEY PARA LOCAL =========
-# En producción será reemplazado por ENV (prod.py)
-try:
-    with open(BASE_DIR.child("secret.json")) as f:
-        secret = json.loads(f.read())
-except FileNotFoundError:
-    secret = {}
+# Quick-start development settings - unsuitable for production
+# See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
-def get_secret(secret_name, secrets=secret):
+# SECURITY WARNING: keep the secret key used in production secret!
+with open("secret.json") as f:
+    secret = json.loads(f.read())
+
+def get_secret(secrest_name, secrets=secret):
     try:
-        return secrets[secret_name]
-    except KeyError:
-        msg = f"La variable {secret_name} no existe en secret.json"
+        return secrets[secrest_name]
+    except:
+        msg = "la variable no %s existe" %secrest_name
         raise ImproperlyConfigured(msg)
+    
+SECRET_KEY = get_secret('SECRET_KEY')
 
 
-# ========= DJANGO APPS =========
+
+# Application definition
+
 DJANGO_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
@@ -154,15 +34,11 @@ DJANGO_APPS = (
     'django.contrib.staticfiles',
 )
 
-# ========= APPS DE TERCEROS =========
 THIRD_PARTY_APPS = (
-    'cloudinary_storage',
-    'cloudinary',    
     'ckeditor',
-    'ckeditor_uploader',    
+    'ckeditor_uploader',
 )
 
-# ========= APPS LOCALES =========
 LOCAL_APPS = (
     'applications.users',
     'applications.municipios',
@@ -173,14 +49,11 @@ LOCAL_APPS = (
     'applications.equipo',
 )
 
+
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
-
-
-# ========= MIDDLEWARE =========
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    # WhiteNoise se agrega en prod.py
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -189,17 +62,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-
-# ========= URLS/Wsgi =========
 ROOT_URLCONF = 'liberal.urls'
-WSGI_APPLICATION = 'liberal.wsgi.application'
 
-
-# ========= TEMPLATES =========
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR.child("templates")],
+        'DIRS': [BASE_DIR.child('templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -211,8 +79,12 @@ TEMPLATES = [
     },
 ]
 
+WSGI_APPLICATION = 'liberal.wsgi.application'
 
-# ========= VALIDADORES =========
+
+# Password validation
+# https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
+
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -229,23 +101,21 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# ========= INTERNACIONALIZACIÓN =========
+# Internationalization
+# https://docs.djangoproject.com/en/5.2/topics/i18n/
+
 LANGUAGE_CODE = 'es-ES'
+
 TIME_ZONE = 'UTC'
+
 USE_I18N = True
+
 USE_TZ = True
 
+# Default primary key field type
+# https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
-# ========= MODELO DE USUARIO =========
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
 AUTH_USER_MODEL = 'users.USER'
-
-
-# ========= STATIC / MEDIA PARA LOCAL =========
-STATIC_URL = '/static/'
-STATICFILES_DIRS = []
-#STATICFILES_DIRS = [BASE_DIR.child('static')]
-
-#MEDIA_URL = '/media/'
-#MEDIA_ROOT = BASE_DIR.child('media')
-
-# En producción STATIC_ROOT se define en prod.py
