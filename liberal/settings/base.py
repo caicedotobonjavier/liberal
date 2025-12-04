@@ -257,49 +257,18 @@ CKEDITOR_CONFIGS = {
     },
 }
 
-# ==================== CLOUDINARY CONFIGURATION ====================
-print("=" * 50)
-print("CLOUDINARY CONFIGURATION CHECK:")
-print(f"CLOUDINARY_CLOUD_NAME: {os.environ.get('CLOUDINARY_CLOUD_NAME', 'NO CONFIGURADO')}")
-print(f"CLOUDINARY_API_KEY: {'CONFIGURADO' if os.environ.get('CLOUDINARY_API_KEY') else 'NO CONFIGURADO'}")
-print(f"CLOUDINARY_API_SECRET: {'CONFIGURADO' if os.environ.get('CLOUDINARY_API_SECRET') else 'NO CONFIGURADO'}")
-print("=" * 50)
-
-CLOUDINARY_CLOUD_NAME = os.environ.get('CLOUDINARY_CLOUD_NAME')
-CLOUDINARY_API_KEY = os.environ.get('CLOUDINARY_API_KEY')
-CLOUDINARY_API_SECRET = os.environ.get('CLOUDINARY_API_SECRET')
-
-CLOUDINARY_CONFIGURED = all([CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET])
-
-if CLOUDINARY_CONFIGURED:
-    # CONFIGURACIÓN MÍNIMA QUE FUNCIONA - SIN PREFIX
-    CLOUDINARY_STORAGE = {
-        'CLOUD_NAME': CLOUDINARY_CLOUD_NAME,
-        'API_KEY': CLOUDINARY_API_KEY,
-        'API_SECRET': CLOUDINARY_API_SECRET,
-        'SECURE': True,
-    }
-    
-    import cloudinary
-    cloudinary.config(
-        cloud_name=CLOUDINARY_CLOUD_NAME,
-        api_key=CLOUDINARY_API_KEY,
-        api_secret=CLOUDINARY_API_SECRET,
-        secure=True
-    )
-    
-    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-    MEDIA_URL = ''
-    MEDIA_ROOT = ''
-    
-    print("✅ CLOUDINARY ACTIVADO - Sin prefix, debería funcionar")
-else:
-    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
-    MEDIA_URL = '/media/'
-    MEDIA_ROOT = BASE_DIR.child('media')
-    print("⚠️  CLOUDINARY NO CONFIGURADO - Local")
-# ==================== FIN CLOUDINARY ====================
-
+# ==================== STATIC & MEDIA FILES (DESARROLLO) ====================
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR.child('static')]
+
+# Media files (uploaded by users) - CONFIGURACIÓN LOCAL
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR.child('media')
+DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+
+print("=" * 50)
+print("BASE SETTINGS LOADED - MODO DESARROLLO")
+print(f"MEDIA_URL: {MEDIA_URL}")
+print(f"DEFAULT_FILE_STORAGE: {DEFAULT_FILE_STORAGE}")
+print("=" * 50)

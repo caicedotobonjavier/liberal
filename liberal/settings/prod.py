@@ -1,41 +1,27 @@
 import os
 import dj_database_url
 from .base import *
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+from cloudinary_storage.storage import MediaCloudinaryStorage
 
-# Agrega esto AL PRINCIPIO de prod.py, DESPUÉS de los imports
-print("=" * 50)
-print("VERIFICACIÓN FINAL CLOUDINARY:")
-print(f"Variables Cloudinary: {os.environ.get('CLOUDINARY_CLOUD_NAME')}, {os.environ.get('CLOUDINARY_API_KEY')[:5]}..., {os.environ.get('CLOUDINARY_API_SECRET')[:5]}...")
-print(f"DEFAULT_FILE_STORAGE: {os.environ.get('DEFAULT_FILE_STORAGE', 'NO SETEADO')}")
-print(f"MEDIA_URL: {os.environ.get('MEDIA_URL', 'NO SETEADO')}")
-print("=" * 50)
-
-# Debug
+# ==================== DEBUG ====================
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-# Debug info
-print("=" * 50)
-print("PRODUCTION SETTINGS LOADED")
-print(f"DEBUG: {DEBUG}")
-print(f"DATABASE_URL: {'CONFIGURADO' if os.environ.get('DATABASE_URL') else 'NO CONFIGURADO'}")
-print("=" * 50)
-
-# Hosts permitidos
+# ==================== ALLOWED HOSTS ====================
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
+    'liberal-58ne.onrender.com',
 ]
 
 # Agregar host dinámico de Render
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
-    print(f"RENDER_EXTERNAL_HOSTNAME: {RENDER_EXTERNAL_HOSTNAME}")
 
-# Agregar tu dominio de Render actual
-ALLOWED_HOSTS.append('liberal-58ne.onrender.com')
-
-# Base de datos PostgreSQL para Render
+# ==================== DATABASE ====================
 DATABASES = {
     'default': dj_database_url.config(
         default=os.environ.get('DATABASE_URL'),
@@ -44,58 +30,31 @@ DATABASES = {
     )
 }
 
-# Static files para producción
+# ==================== STATIC FILES ====================
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR.child('staticfiles')
-
-# WhiteNoise para servir archivos estáticos
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
 
-# En producción, CKEDITOR debe usar Cloudinary si está configurado
-if 'cloudinary_storage' in INSTALLED_APPS:
-    try:
-        # Configurar CKEDITOR para usar Cloudinary
-        CKEDITOR_CONFIGS['default']['filebrowserUploadUrl'] = '/ckeditor/upload/'
-        CKEDITOR_CONFIGS['default']['filebrowserBrowseUrl'] = '/ckeditor/browse/'
-    except:
-        pass
+# ==================== CLOUDINARY CONFIGURATION ====================
+print("=" * 50)
+print("🔍 VERIFICANDO CLOUDINARY EN PRODUCCIÓN")
+print(f"CLOUDINARY_CLOUD_NAME: {os.environ.get('CLOUDINARY_CLOUD_NAME', 'NO SET')}")
+print(f"CLOUDINARY_API_KEY: {'SET' if os.environ.get('CLOUDINARY_API_KEY') else 'NO SET'}")
+print(f"CLOUDINARY_API_SECRET: {'SET' if os.environ.get('CLOUDINARY_API_SECRET') else 'NO SET'}")
+print("=" * 50)
 
-# Seguridad en producción (solo si DEBUG=False)
-if not DEBUG:
-    SECURE_BROWSER_XSS_FILTER = True
-    SECURE_CONTENT_TYPE_NOSNIFF = True
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
-    SECURE_SSL_REDIRECT = True
-    print("✅ Configuración de seguridad activada")
-
-
-# ==================== FORZAR CLOUDINARY EN PRODUCCIÓN ====================
-import os
-
-# Verificar variables Cloudinary en producción
-CLOUDINARY_ENV_VARS = all([
+# Verificar que todas las variables existan
+CLOUDINARY_CONFIGURED = all([
     os.environ.get('CLOUDINARY_CLOUD_NAME'),
     os.environ.get('CLOUDINARY_API_KEY'),
     os.environ.get('CLOUDINARY_API_SECRET')
 ])
 
-if CLOUDINARY_ENV_VARS and 'cloudinary_storage' in INSTALLED_APPS:
-    # SOBREESCRIBIR configuración de base.py
-    print("=== FORZANDO CLOUDINARY EN PRODUCCIÓN ===")
+if CLOUDINARY_CONFIGURED:
+    print("✅ TODAS LAS VARIABLES CLOUDINARY CONFIGURADAS")
     
-    CLOUDINARY_STORAGE = {
-        'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
-        'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
-        'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
-    }
-    
-    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-    MEDIA_URL = ''
-    
-    # Importar y configurar Cloudinary SDK
-    import cloudinary
+    # 1. Configurar Cloudinary SDK
     cloudinary.config(
         cloud_name=os.environ.get('CLOUDINARY_CLOUD_NAME'),
         api_key=os.environ.get('CLOUDINARY_API_KEY'),
@@ -103,7 +62,56 @@ if CLOUDINARY_ENV_VARS and 'cloudinary_storage' in INSTALLED_APPS:
         secure=True
     )
     
-    print("✅ CLOUDINARY FORZADO EN PRODUCCIÓN")
+    # 2. Configurar Django Cloudinary Storage
+    CLOUDINARY_STORAGE = {
+        'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
+        'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
+        'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
+        'SECURE': True,
+    }
+    
+    # 3. FORZAR Cloudinary para todas las imágenes
+    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+    
+    # 4. Configurar MEDIA_URL para que Django genere URLs correctas
+    MEDIA_URL = '/media/'  # IMPORTANTE: No vacío!
+    
+    print("✅ CLOUDINARY ACTIVADO CORRECTAMENTE")
+    print(f"DEFAULT_FILE_STORAGE: {DEFAULT_FILE_STORAGE}")
+    print(f"MEDIA_URL: {MEDIA_URL}")
+    
+    # Prueba rápida de Cloudinary
+    try:
+        # Subir una imagen de prueba
+        test_result = cloudinary.uploader.upload(
+            'https://res.cloudinary.com/demo/image/upload/sample.jpg',
+            public_id='test_render',
+            folder='test/'
+        )
+        print(f"✅ Cloudinary funciona: {test_result['secure_url']}")
+    except Exception as e:
+        print(f"⚠️  Prueba Cloudinary falló: {e}")
 else:
-    print("⚠️  Cloudinary no forzado - variables faltantes")
-# ==================== FIN FORZAR CLOUDINARY ====================
+    print("⚠️  Cloudinary NO configurado - usando almacenamiento local")
+    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+    MEDIA_URL = '/media/'
+    MEDIA_ROOT = BASE_DIR.child('media')
+
+# ==================== CKEDITOR CONFIGURATION ====================
+# Configurar CKEDITOR para usar Cloudinary en producción
+if 'cloudinary_storage' in INSTALLED_APPS and CLOUDINARY_CONFIGURED:
+    try:
+        CKEDITOR_CONFIGS['default']['filebrowserUploadUrl'] = '/ckeditor/upload/'
+        CKEDITOR_CONFIGS['default']['filebrowserBrowseUrl'] = '/ckeditor/browse/'
+        print("✅ CKEditor configurado para Cloudinary")
+    except Exception as e:
+        print(f"⚠️  CKEditor no pudo configurarse: {e}")
+
+# ==================== SEGURIDAD ====================
+if not DEBUG:
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_SSL_REDIRECT = True
+    print("✅ Configuración de seguridad activada")

@@ -16,10 +16,10 @@ https://docs.djangoproject.com/en/5.2/howto/deployment/wsgi/
 #application = get_wsgi_application()
 
 import os
+
 from django.core.wsgi import get_wsgi_application
 
-# Usa variable de entorno o local por defecto
-settings_module = os.environ.get('DJANGO_SETTINGS_MODULE', 'liberal.settings.local')
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', settings_module)
+# IMPORTANTE: Usa prod.py en producción
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'liberal.settings.prod')
 
 application = get_wsgi_application()
