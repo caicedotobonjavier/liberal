@@ -1,19 +1,20 @@
 import os
 import dj_database_url
-
 from .base import *
 
 # Debug
-DEBUG = False
-
-# Secret Key desde variable de entorno
-SECRET_KEY = os.environ.get('SECRET_KEY')
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
 # Hosts permitidos
 ALLOWED_HOSTS = [
-    'liberal-app.onrender.com',  # Tu dominio en Render
-    'tu-dominio.com',            # Si tienes dominio personalizado
+    'localhost',
+    '127.0.0.1',
 ]
+
+# Agregar host dinámico de Render
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 # Base de datos PostgreSQL para Render
 DATABASES = {
@@ -26,4 +27,8 @@ DATABASES = {
 
 # Static files
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = BASE_DIR.child('staticfiles')
+
+# WhiteNoise para servir archivos estáticos
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')

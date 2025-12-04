@@ -15,14 +15,10 @@ https://docs.djangoproject.com/en/5.2/howto/deployment/wsgi/
 #
 #application = get_wsgi_application()
 
-
 import os
 from django.core.wsgi import get_wsgi_application
 
-# ELIMINA o COMENTA esta línea:
-# os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'liberal.settings.local')
-
-# Reemplaza con:
+# Usa variable de entorno o local por defecto
 settings_module = os.environ.get('DJANGO_SETTINGS_MODULE', 'liberal.settings.local')
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', settings_module)
 
