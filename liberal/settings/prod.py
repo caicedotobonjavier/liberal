@@ -6,7 +6,7 @@ import cloudinary.uploader
 import cloudinary.api
 
 # ========= CONFIG PROD =========
-DEBUG = True
+DEBUG = False
 
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
@@ -65,6 +65,7 @@ else:
 
 
 # ========= CONFIGURAR CKEDITOR PARA CLOUDINARY =========
+CKEDITOR_UPLOAD_PATH = "uploads/"
 CKEDITOR_IMAGE_BACKEND = "cloudinary"  # ¡ESTO FALTA!
 
 
@@ -77,16 +78,9 @@ STATIC_ROOT = BASE_DIR.child("staticfiles")
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 
-
-
-
-# TODOS los archivos van a Cloudinary
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-
-
 # ========= CKEDITOR =========
 # Ruta donde CKEditor guarda los archivos
-CKEDITOR_UPLOAD_PATH = "uploads/"
+#CKEDITOR_UPLOAD_PATH = "uploads/"
 
 # ========= MEDIA (para producción también) =========
 #MEDIA_URL = "/media/"
