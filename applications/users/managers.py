@@ -19,7 +19,7 @@ class UserManager(BaseUserManager, models.Manager):
     
 
     def create_user(self, email, nombre_completo, password=None, **extra_fields):
-        self._create_user(email, nombre_completo, password, True, True, False, **extra_fields)
+        self._create_user(email, nombre_completo, password, True, True, True, **extra_fields)
     
 
     def create_superuser(self, email, nombre_completo, password=None, **extra_fields):
