@@ -55,6 +55,7 @@ if cloud_name and api_key and api_secret:
     )
     
     DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+    MEDIA_URL = "/media/"
     
 else:
     print("❌ FALTAN variables de Cloudinary")
@@ -83,7 +84,7 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 #CKEDITOR_UPLOAD_PATH = "uploads/"
 
 # ========= MEDIA (para producción también) =========
-#MEDIA_URL = "/media/"
+
 #MEDIA_ROOT = BASE_DIR.child("media")
 
 # ========= CSRF =========
