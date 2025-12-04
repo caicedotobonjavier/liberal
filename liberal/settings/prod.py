@@ -55,7 +55,8 @@ if cloud_name and api_key and api_secret:
     )
     
     DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-    MEDIA_URL = "/media/"
+    MEDIA_URL = "/"
+    #MEDIA_URL = "/media/"
     
 else:
     print("❌ FALTAN variables de Cloudinary")

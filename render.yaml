@@ -18,7 +18,7 @@ services:
         value: False
 
       - key: ALLOWED_HOSTS
-        value: liberal-web.onrender.com
+        value: liberal-rpwa.onrender.com
 
       # ESTA VARIABLE VIENE AUTOMÁTICAMENTE DE LA BD
       - key: DATABASE_URL
@@ -28,7 +28,7 @@ services:
 
     buildCommand: |
       pip install -r requirements.txt
-      python manage.py collectstatic --no-input
+      python manage.py collectstatic --noinput
       python manage.py migrate --no-input
 
     startCommand: gunicorn liberal.wsgi --bind 0.0.0.0:$PORT --log-file -
