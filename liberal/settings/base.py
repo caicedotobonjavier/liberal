@@ -123,6 +123,7 @@
 import json
 from django.core.exceptions import ImproperlyConfigured
 from unipath import Path
+import os
 
 # ========= BASE DIR =========
 BASE_DIR = Path(__file__).resolve().ancestor(3)
@@ -157,6 +158,8 @@ DJANGO_APPS = (
 THIRD_PARTY_APPS = (
     'ckeditor',
     'ckeditor_uploader',
+    'cloudinary',
+    'cloudinary_storage',
 )
 
 # ========= APPS LOCALES =========
@@ -172,6 +175,16 @@ LOCAL_APPS = (
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
+
+# AGREGAR después de las apps
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
+    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
+}
+
+# CAMBIAR SOLO ESTA LÍNEA (o agregar si no existe)
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # ========= MIDDLEWARE =========
 MIDDLEWARE = [
