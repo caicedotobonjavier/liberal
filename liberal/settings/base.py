@@ -242,7 +242,8 @@ AUTH_USER_MODEL = 'users.USER'
 
 # ========= STATIC / MEDIA PARA LOCAL =========
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR.child('static')]
+STATICFILES_DIRS = []
+#STATICFILES_DIRS = [BASE_DIR.child('static')]
 
 #MEDIA_URL = '/media/'
 #MEDIA_ROOT = BASE_DIR.child('media')
