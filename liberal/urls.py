@@ -33,7 +33,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include, re_path
 from django.conf import settings
-from django.conf.urls.static import static
+from django.http import JsonResponse
+import os
+
+def debug_cloudinary(request):
+    return JsonResponse({
+        'status': 'ok',
+        'debug': settings.DEBUG,
+    })
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -51,3 +58,8 @@ urlpatterns = [
 # Solo para DEBUG, pero no te causa problema en prod
 #urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
+# IMPORTANTE: Mantén esta línea PERO solo para desarrollo
+if settings.DEBUG:
+    from django.conf.urls.static import static
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
