@@ -61,3 +61,41 @@ if not DEBUG:
     CSRF_COOKIE_SECURE = True
     SECURE_SSL_REDIRECT = True
     print("✅ Configuración de seguridad activada")
+
+
+# ==================== FORZAR CLOUDINARY EN PRODUCCIÓN ====================
+import os
+
+# Verificar variables Cloudinary en producción
+CLOUDINARY_ENV_VARS = all([
+    os.environ.get('CLOUDINARY_CLOUD_NAME'),
+    os.environ.get('CLOUDINARY_API_KEY'),
+    os.environ.get('CLOUDINARY_API_SECRET')
+])
+
+if CLOUDINARY_ENV_VARS and 'cloudinary_storage' in INSTALLED_APPS:
+    # SOBREESCRIBIR configuración de base.py
+    print("=== FORZANDO CLOUDINARY EN PRODUCCIÓN ===")
+    
+    CLOUDINARY_STORAGE = {
+        'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
+        'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
+        'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
+    }
+    
+    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+    MEDIA_URL = ''
+    
+    # Importar y configurar Cloudinary SDK
+    import cloudinary
+    cloudinary.config(
+        cloud_name=os.environ.get('CLOUDINARY_CLOUD_NAME'),
+        api_key=os.environ.get('CLOUDINARY_API_KEY'),
+        api_secret=os.environ.get('CLOUDINARY_API_SECRET'),
+        secure=True
+    )
+    
+    print("✅ CLOUDINARY FORZADO EN PRODUCCIÓN")
+else:
+    print("⚠️  Cloudinary no forzado - variables faltantes")
+# ==================== FIN FORZAR CLOUDINARY ====================
