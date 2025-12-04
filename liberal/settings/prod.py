@@ -2,6 +2,14 @@ import os
 import dj_database_url
 from .base import *
 
+# Agrega esto AL PRINCIPIO de prod.py, DESPUÉS de los imports
+print("=" * 50)
+print("VERIFICACIÓN FINAL CLOUDINARY:")
+print(f"Variables Cloudinary: {os.environ.get('CLOUDINARY_CLOUD_NAME')}, {os.environ.get('CLOUDINARY_API_KEY')[:5]}..., {os.environ.get('CLOUDINARY_API_SECRET')[:5]}...")
+print(f"DEFAULT_FILE_STORAGE: {os.environ.get('DEFAULT_FILE_STORAGE', 'NO SETEADO')}")
+print(f"MEDIA_URL: {os.environ.get('MEDIA_URL', 'NO SETEADO')}")
+print("=" * 50)
+
 # Debug
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 

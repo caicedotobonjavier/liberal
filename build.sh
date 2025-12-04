@@ -32,3 +32,24 @@ echo "=== COLECTANDO STATIC FILES ==="
 python manage.py collectstatic --noinput
 
 echo "=== BUILD COMPLETADO ==="
+
+# Al final de build.sh
+echo "=== PRUEBA DIRECTA CLOUDINARY ==="
+python -c "
+import cloudinary
+import cloudinary.uploader
+import os
+cloudinary.config(
+    cloud_name=os.environ.get('CLOUDINARY_CLOUD_NAME'),
+    api_key=os.environ.get('CLOUDINARY_API_KEY'),
+    api_secret=os.environ.get('CLOUDINARY_API_SECRET'),
+    secure=True
+)
+print('Cloudinary config OK')
+# Intenta subir una imagen de prueba
+try:
+    result = cloudinary.uploader.upload('https://res.cloudinary.com/demo/image/upload/sample.jpg', public_id='test_render')
+    print(f'✅ Cloudinary funciona: {result[\"url\"]}')
+except Exception as e:
+    print(f'❌ Cloudinary error: {e}')
+"
