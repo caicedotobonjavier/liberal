@@ -64,6 +64,9 @@ else:
     DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
 
 
+# ========= CONFIGURAR CKEDITOR PARA CLOUDINARY =========
+CKEDITOR_IMAGE_BACKEND = "cloudinary"  # ¡ESTO FALTA!
+
 
 # ========= WHITENOISE =========
 MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')

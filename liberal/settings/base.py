@@ -156,8 +156,8 @@ DJANGO_APPS = (
 
 # ========= APPS DE TERCEROS =========
 THIRD_PARTY_APPS = (
-    'cloudinary',
     'cloudinary_storage',
+    'cloudinary',    
     'ckeditor',
     'ckeditor_uploader',    
 )
